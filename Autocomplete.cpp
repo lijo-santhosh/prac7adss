@@ -7,25 +7,25 @@ Autocomplete::Autocomplete() {
 }
     
 void Autocomplete::insert(std::string word) {
-    TrieNode* Node = root;
+    TrieNode* currentNode = root;
 
     for (char c : word) {
     int in = c - 'a';
-        if (Node->Child[in] == nullptr) {
-            Node->Child[in] = new TrieNode();
+        if (currentNode->children[in] == nullptr) {
+            currentNode->children[in] = new TrieNode();
         }
-        Node = Node->Child[in];
+        currentNode = currentNode->children[in];
     }
 
-    Node->wordEnd = true;
+    currentNode->isEndOfWord = true;
 }
 
 std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
-    TrieNode* Node = root;
+    TrieNode* currentNode = root;
     std::vector<std::string> suggestions;
     for (char c : partialWord) {
       int in = c - 'a';
-      if (Node->children[in] == nullptr) {
+      if (currentNode->children[in] == nullptr) {
         return suggestions;  // empty vector
       }
       currentNode = currentNode->children[in];
@@ -50,4 +50,6 @@ void Autocomplete::getWords(std::string builtWord, TrieNode* current, std::vecto
       }
     }
 }
+
+
 

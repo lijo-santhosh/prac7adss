@@ -8,12 +8,12 @@
 class Autocomplete {
  private:
   struct TrieNode {
-    std::vector<TrieNode*> Child;
-    bool wordEnd;
+    std::vector<TrieNode*> children;
+    bool isEndOfWord;
 
     TrieNode() {
-      wordEnd = false;
-      Child = std::vector<TrieNode*>(26, nullptr);
+      isEndOfWord = false;
+      children = std::vector<TrieNode*>(26, nullptr);
     }
   };
 
@@ -24,9 +24,9 @@ class Autocomplete {
 
   void insert(std::string word);
 
-  std::vector<std::string> getTheSuggestions(std::string PartWord);
+  std::vector<std::string> getSuggestions(std::string partialWord);
 
-  void getTheWords(std::string wordBuilt, TrieNode* current, std::vector<std::string>& suggestions);
+  void getWords(std::string builtWord, TrieNode* current, std::vector<std::string>& suggestions);
 };
 
 #endif
