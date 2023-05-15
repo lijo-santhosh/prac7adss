@@ -11,13 +11,13 @@ void Autocomplete::insert(std::string word) {
 
     for (char c : word) {
     int in = c - 'a';
-        if (currentNode->children[in] == nullptr) {
-            currentNode->children[in] = new TrieNode();
+        if (currentNode->child[in] == nullptr) {
+            currentNode->child[in] = new TrieNode();
         }
-        currentNode = currentNode->children[in];
+        currentNode = currentNode->child[in];
     }
 
-    currentNode->isEndOfWord = true;
+    currentNode->EndWord = true;
 }
 
 std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
@@ -25,10 +25,10 @@ std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
     std::vector<std::string> suggestions;
     for (char c : partialWord) {
       int in = c - 'a';
-      if (currentNode->children[in] == nullptr) {
+      if (currentNode->child[in] == nullptr) {
         return suggestions;  // empty vector
       }
-      currentNode = currentNode->children[in];
+      currentNode = currentNode->child[in];
     }
 
     getWords(partialWord, currentNode, suggestions);
@@ -37,16 +37,16 @@ std::vector<std::string> Autocomplete::getSuggestions(std::string partialWord) {
   }
 
 void Autocomplete::getWords(std::string builtWord, TrieNode* current, std::vector<std::string>& suggestions) {
-    if (current->isEndOfWord == true) {
+    if (current->EndWord == true) {
       suggestions.push_back(builtWord);
     }
 
     // loop through all the alphabets
     for (int i = 0; i < 26; i++) {
-      if (current->children[i] != nullptr) { // if a entry is not nullptr that means there is a valid letter
+      if (current->child[i] != nullptr) { // if a entry is not nullptr that means there is a valid letter
         std::string newWord = builtWord;// add valid letter to the back of current word
         newWord.push_back('a' + i);
-        getWords(newWord, current->children[i], suggestions); // call function again with the next child
+        getWords(newWord, current->child[i], suggestions); // call function again with the next child
       }
     }
 }
